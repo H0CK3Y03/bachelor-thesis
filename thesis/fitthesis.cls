@@ -406,10 +406,10 @@ Management}{\@fit@EN}%
 \@author@tp~\fi\@author\ifx\undefined\@author@ta\else,~\@author@ta\fi}
 %Jmeno, prijmeni, tituly vedouciho / name surname and the titles of the supervisor
 \def\get@supervisor{\ifx\undefined\@supervisor@tp\else%
-\@supervisor@tp~\fi\MakeUppercase{\@supervisor}\ifx\undefined\@supervisor@ta\else,~\@supervisor@ta\fi}
+\@supervisor@tp~\fi\MakeUppercase{\@supervisor}\ifx\undefined\@supervisor@ta\else~\@supervisor@ta\fi}
 %Jmeno, prijmeni, tituly školitele specialisty / name surname and the titles of the supervisor specialist
 \def\get@specialist{\ifx\undefined\@specialist@tp\else%
-\@specialist@tp~\fi\MakeUppercase{\@specialist}\ifx\undefined\@specialist@ta\else,~\@specialist@ta\fi}
+\@specialist@tp~\fi\MakeUppercase{\@specialist}\ifx\undefined\@specialist@ta\else~\@specialist@ta\fi}
 %-----------------------------------------------------------------------------
 % Projectinfo - parametrizace sablony / template parameters
 %-----------------------------------------------------------------------------
