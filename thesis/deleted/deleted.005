@@ -1,11 +1,25 @@
 \relax 
-\providecommand \babel@aux [2]{\global \let \babel@toc \@gobbletwo }
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\babel@aux[2]{}
 \@nameuse{bbl@beforestart}
 \catcode `"\active 
 \catcode `-\active 
 \catcode `^\active 
 \catcode `'\active 
-\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \babel@aux{english}{}
@@ -235,9 +249,9 @@
 \newlabel{sec:Fragments}{{D}{66}{Commonly used \LaTeX {} commands}{section*.27}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {D.1}{\ignorespaces Assessment table}}{67}{table.D.1}\protected@file@percent }
 \newlabel{tab:ExampleTable}{{D.1}{67}{Assessment table}{table.D.1}{}}
-\newlabel{rovnice2}{{D.1}{67}{Commonly used \LaTeX {} commands}{equation.D.1}{}}
-\newlabel{eq:soustava}{{D.2}{67}{Commonly used \LaTeX {} commands}{equation.D.2}{}}
-\newlabel{eq:soustavaSrovnana}{{D.4}{67}{Commonly used \LaTeX {} commands}{equation.D.4}{}}
+\newlabel{rovnice2}{{D.1}{67}{Commonly used \LaTeX {} commands}{equation.D.0.1}{}}
+\newlabel{eq:soustava}{{D.2}{67}{Commonly used \LaTeX {} commands}{equation.D.0.2}{}}
+\newlabel{eq:soustavaSrovnana}{{D.4}{67}{Commonly used \LaTeX {} commands}{equation.D.0.4}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {D.1}{\ignorespaces \textbf  {Wide image.} Image can be comprised of multiple smaller images. If you want to address the partial images from text, use packagae \texttt  {subcaption}.}}{67}{figure.D.1}\protected@file@percent }
 \newlabel{sirokyObrazek}{{D.1}{67}{\textbf {Wide image.} Image can be comprised of multiple smaller images. If you want to address the partial images from text, use packagae \texttt {subcaption}}{figure.D.1}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {D.2}{\ignorespaces Good text is a bad text, that has been changed countless times. You have to start somewhere.}}{68}{figure.D.2}\protected@file@percent }
