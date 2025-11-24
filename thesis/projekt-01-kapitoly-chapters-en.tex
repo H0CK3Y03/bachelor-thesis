@@ -6,26 +6,23 @@
 % \documentclass[../projekt.tex]{subfiles}
 % \begin{document}
 
-\chapter{Introduction}
-\label{ch:introduction}
+\chapter{Introduction}\label{ch:introduction}
 
 The rapid advancement and widespread deployment of large language models (LLMs) such as GPT-5.1, Claude 4.5, Gemini 3 and others have transformed natural-language interaction with computers.
-
 These models power chatbots, code assistants, translation services, and creative tools used daily by millions of users.
 
-However, their remarkable capabilities come with significant safety and ethical risks:
+However, their remarkable capabilities come with significant safety and ethical risks.
+LLMs can generate harmful, biased, misleading, or illegal content when subjected to carefully crafted adversarial inputs, a practice commonly known as \emph{jailbreaking}~\cite{wei2023jailbroken},~\cite{zou2023universal}.
 
-LLMs can generate harmful, biased, misleading, or illegal content when subjected to carefully crafted adversarial inputs, a practice commonly known as \emph{jailbreaking} \cite{wei2023jailbroken}, \cite{zou2023universal}.
+Real-world incidents such as ChatGPT being tricked into providing bomb-making instructions~\cite{yaser2023potential}, or Gemini's image-generation controversy, have demonstrated that even heavily aligned commercial models remain vulnerable.
 
-Real-world incidents — such as ChatGPT being tricked into providing bomb-making instructions \cite{chen2023chatgpt}, or Gemini's image-generation controversy — have demonstrated that even heavily aligned commercial models remain vulnerable.
+Red teaming, cybersecurity technique involving simulated attacks to expose vulnerabilities, has been adopted by leading AI organisations (OpenAI, Anthropic, Google DeepMind, Meta AI) as a core component of LLM safety evaluation~\cite{openai2024redteaming}.
 
-Red teaming, originally a cybersecurity technique involving simulated attacks to expose vulnerabilities, has been adopted by leading AI organisations (OpenAI, Anthropic, Google DeepMind, Meta AI) as a core component of LLM safety evaluation \cite{openai2024redteaming}.
-
-With the adoption of the EU AI Act in 2024, systematic risk assessment including red teaming will become a legal requirement for high-risk AI systems deployed in the European Union from 2026 onward \cite{eu2024aiact}.
+With the adoption of the EU AI Act in 2024, systematic risk assessment including red teaming will become a legal requirement for high-risk AI systems deployed in the European Union from 2026 onward~\cite{eu2024aiact}.
 
 Consequently, efficient, reproducible, and extensible red-teaming tools are no longer a luxury but an essential part of responsible AI development.
 
-Despite significant progress, most existing open-source red-teaming frameworks suffer from limited modularity, poor support for multi-turn conversations, inadequate multilingual harm detection, or steep learning curves that hinder adoption by smaller research teams and individual developers \cite{purpur2024building, schoepf2025madmax, belaire2024automatic}.
+Despite significant progress, most existing open-source red-teaming frameworks suffer from limited modularity, poor support for multi-turn conversations, inadequate multilingual harm detection, or steep learning curves that hinder adoption by smaller research teams and individual developers~\cite{purpur2025building, schoepf2025madmax, belaire2025automatic}.
 
 This creates a clear need for a new, developer-friendly toolkit that lowers the barrier to systematic safety testing.
 
@@ -54,8 +51,7 @@ Chapter~\ref{ch:architecture} presents the proposed modular architecture and its
 The implementation, experimental evaluation, and overall conclusions will be added in the final version of this thesis.
 
 
-\chapter{Abstract}
-\label{abstrakt}
+\chapter{Abstract}\label{abstrakt}
 
 
 \bigskip

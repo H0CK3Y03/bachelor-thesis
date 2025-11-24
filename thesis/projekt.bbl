@@ -2,38 +2,40 @@
 \makeatother
 \begin{thebibliography}{1}
 
-\bibitem{belaire2024automatic}
+\bibitem{belaire2025automatic}
 {\sc\bgroup}Belaire{\egroup}, N. et~al.
 \newblock {\em Automatic LLM Red Teaming}.
-\newblock 2024.
+\newblock 2025.
 \newblock Available at: ~{\small\url{https://arxiv.org/abs/2508.04451}}.
 
-\bibitem{chen2023chatgpt}
-{\sc\bgroup}Chen{\egroup}, J. and~{\sc\bgroup}Jordan{\egroup}, M.
-\newblock {\em How Jailbreaks Work on ChatGPT}.
+\bibitem{yaser2023potential}
+{\sc\bgroup}Esmailzadeh{\egroup}, Y.
+\newblock {\em Potential Risks of ChatGPT: Implications for Counterterrorism
+  and International Security}.
 \newblock 2023.
-\newblock Available at: ~{\small\url{https://www.lesswrong.com/posts/...}}
+\newblock Available at:
+  ~{\small\url{https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4461195}}.
+
+\bibitem{openai2024redteaming}
+{\sc\bgroup}OpenAI{\egroup}.
+\newblock {\em Red Teaming Network}.
+\newblock 2023.
+\newblock Available at:
+  ~{\small\url{https://openai.com/blog/red-teaming-network}}.
 
 \bibitem{eu2024aiact}
-{\sc\bgroup}{European Parliament and Council}{\egroup}.
+{\sc\bgroup}Parliament{\egroup}, E. and~{\sc\bgroup}Council{\egroup}.
 \newblock {\em Regulation (EU) 2024/1689 laying down harmonised rules on
   artificial intelligence (Artificial Intelligence Act)}.
 \newblock 2024.
 \newblock Available at:
   ~{\small\url{https://eur-lex.europa.eu/eli/reg/2024/1689/oj}}.
 
-\bibitem{openai2024redteaming}
-{\sc\bgroup}{OpenAI}{\egroup}.
-\newblock {\em Red Teaming Network}.
-\newblock 2024.
-\newblock Available at:
-  ~{\small\url{https://openai.com/blog/red-teaming-network}}.
-
-\bibitem{purpur2024building}
+\bibitem{purpur2025building}
 {\sc\bgroup}Purpura{\egroup}, S.; {\sc\bgroup}Li{\egroup}, A. et~al.
 \newblock {\em Building Safe GenAI Applications: An Overview of Red Teaming for
   LLMs}.
-\newblock 2024.
+\newblock 2025.
 \newblock Available at: ~{\small\url{https://arxiv.org/abs/2503.01742}}.
 
 \bibitem{schoepf2025madmax}

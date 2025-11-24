@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex projekt"] 1763582343 "projekt.aux" "projekt.bbl" "projekt" 1763582344
+["bibtex projekt"] 1764004352 "projekt.aux" "projekt.bbl" "projekt" 1764004353
   "./bib-styles/Pysny/enplain.bst" 1760965566 71468 c1b3cc5e446a686e84880ca7c5f23336 ""
-  "projekt-20-literatura-bibliography.bib" 1763475897 1942 dd33bda086495f42d5628a7d4d50e3f8 ""
-  "projekt.aux" 1763582344 21801 2dce8352d8da59e396f990811fe0ac71 "pdflatex"
+  "projekt-20-literatura-bibliography.bib" 1764004322 2008 4007f6d081a959c0b81049305835fcd2 ""
+  "projekt.aux" 1764004353 21807 c747c6acdca09a72ca13a07142651661 "pdflatex"
   (generated)
   "projekt.bbl"
   "projekt.blg"
-["pdflatex"] 1763582344 "/home/hockey/bachelor_thesis/thesis/projekt.tex" "projekt.pdf" "projekt" 1763582344
+["pdflatex"] 1764004352 "/home/hockey/bachelor_thesis/thesis/projekt.tex" "projekt.pdf" "projekt" 1764004353
   "/etc/texmf/web2c/texmf.cnf" 1733352942 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/hockey/bachelor_thesis/thesis/projekt.tex" 1763410843 20236 50cf538fbbea72ea8942e9dbda699180 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/a_jg4h6q.enc" 1561498186 2952 84fda6c8ae8be17712e9d998ffe48bad ""
@@ -173,6 +173,7 @@
   "/usr/share/texmf/fonts/tfm/public/lm/ec-lmri10.tfm" 1254938640 17148 9556e1b5f936b77a796f68d2d559ba99 ""
   "/usr/share/texmf/fonts/tfm/public/lm/ec-lmtk10.tfm" 1254938640 1368 5bfeb1cf8f9f0acdb7436bfaa8e0da4e ""
   "/usr/share/texmf/fonts/tfm/public/lm/ec-lmtt10.tfm" 1254938640 1372 2ef2c2b492b3c4cd7879fe083abbb061 ""
+  "/usr/share/texmf/fonts/tfm/public/lm/ec-lmtt8.tfm" 1254938640 1380 64228d979098ac090aa3f98d5aa8ad3e ""
   "/usr/share/texmf/fonts/tfm/public/lm/ec-lmtt9.tfm" 1254938640 1372 a2ff2d4391a2d6bba15b518acb79e80f ""
   "/usr/share/texmf/fonts/tfm/public/lm/ec-lmtti10.tfm" 1254938640 1372 0dcee1a56926aed3dd9ded91b7563563 ""
   "/usr/share/texmf/fonts/tfm/public/lm/ts1-lmr10.tfm" 1254938640 1556 b86d923e6b2f9aab2e313098a95cb0b8 ""
@@ -200,14 +201,14 @@
   "fitthesis.cls" 1763408617 47893 63406a60f5367d43ce48af1426ac5164 ""
   "obrazky-figures/keep-calm.png" 1760965566 31634 64dcb565ea77a8724786a9c359f57817 ""
   "obrazky-figures/placeholder.pdf" 1760965566 4151 ba51734e4292a6fb99463dcf78e46548 ""
-  "projekt-01-kapitoly-chapters-en.tex" 1763582342 127066 86d03b217c8d4300ffd3bbe868b33a3c ""
+  "projekt-01-kapitoly-chapters-en.tex" 1764004350 128369 262a0c4a891fbeecbf79d24eabfb8f0d ""
   "projekt-30-prilohy-appendices-en.tex" 1760965566 56035 5363c469c1f70887c42e705bbea41656 ""
-  "projekt.aux" 1763582344 21801 2dce8352d8da59e396f990811fe0ac71 "pdflatex"
-  "projekt.bbl" 1763582344 2155 a86b64882d4ab1e3fb08bd1ec821db73 "bibtex projekt"
-  "projekt.lof" 1763582344 729 e8945c23291a9a3fbb19a23c2712cfb5 "pdflatex"
-  "projekt.out" 1763582344 10255 29cc253f5eefef1d27fb802e57ce25eb "pdflatex"
+  "projekt.aux" 1764004353 21807 c747c6acdca09a72ca13a07142651661 "pdflatex"
+  "projekt.bbl" 1764004352 2228 bbeacc01a0c1c101f90f3a83e598790d "bibtex projekt"
+  "projekt.lof" 1764004353 729 e8945c23291a9a3fbb19a23c2712cfb5 "pdflatex"
+  "projekt.out" 1764004353 10255 29cc253f5eefef1d27fb802e57ce25eb "pdflatex"
   "projekt.tex" 1763410843 20236 50cf538fbbea72ea8942e9dbda699180 ""
-  "projekt.toc" 1763582344 10725 828dd314704486fc9b5887909f541a9c "pdflatex"
+  "projekt.toc" 1764004353 10725 828dd314704486fc9b5887909f541a9c "pdflatex"
   "template-fig/VUT_symbol_barevne_CMYK_CZ.pdf" 1760965566 309809 cf559eee790357af64f350838d9706c8 ""
   (generated)
   "projekt.aux"
@@ -217,4 +218,3 @@
   "projekt.pdf"
   "projekt.ptc"
   "projekt.toc"
-  (rewritten before read)
