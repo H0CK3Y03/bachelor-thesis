@@ -3,7 +3,8 @@
 \begin{thebibliography}{1}
 
 \bibitem{belaire2025automatic}
-{\sc\bgroup}Belaire{\egroup}, N. et~al.
+{\sc\bgroup}Belaire{\egroup}, R.; {\sc\bgroup}Sinha{\egroup}, A.
+  and~{\sc\bgroup}Varakantham{\egroup}, P.
 \newblock {\em Automatic LLM Red Teaming}.
 \newblock 2025.
 \newblock Available at: ~{\small\url{https://arxiv.org/abs/2508.04451}}.
@@ -32,17 +33,29 @@
   ~{\small\url{https://eur-lex.europa.eu/eli/reg/2024/1689/oj}}.
 
 \bibitem{purpur2025building}
-{\sc\bgroup}Purpura{\egroup}, S.; {\sc\bgroup}Li{\egroup}, A. et~al.
+{\sc\bgroup}Purpura{\egroup}, A.; {\sc\bgroup}Wadhwa{\egroup}, S.;
+  {\sc\bgroup}Zymet{\egroup}, J.; {\sc\bgroup}Gupta{\egroup}, A.;
+  {\sc\bgroup}Luo{\egroup}, A. et~al.
 \newblock {\em Building Safe GenAI Applications: An Overview of Red Teaming for
   LLMs}.
 \newblock 2025.
 \newblock Available at: ~{\small\url{https://arxiv.org/abs/2503.01742}}.
 
 \bibitem{schoepf2025madmax}
-{\sc\bgroup}Schoepf{\egroup}, M. et~al.
+{\sc\bgroup}Schoepf{\egroup}, S.; {\sc\bgroup}Hameed{\egroup}, M.~Z.;
+  {\sc\bgroup}Rawat{\egroup}, A.; {\sc\bgroup}Fraser{\egroup}, K.;
+  {\sc\bgroup}Zizzo{\egroup}, G. et~al.
 \newblock {\em MAD-MAX: Modular Adversarial Red Teaming of LLMs}.
 \newblock 2025.
 \newblock Available at: ~{\small\url{https://arxiv.org/abs/2503.06253}}.
+
+\bibitem{andrew2025agonistic}
+{\sc\bgroup}Shaw{\egroup}, A.; {\sc\bgroup}Ye{\egroup}, A.;
+  {\sc\bgroup}Krishna{\egroup}, R. and~{\sc\bgroup}Zhang{\egroup}, A.~X.
+\newblock {\em Agonistic Image Generation: Unsettling the Hegemony of
+  Intention}.
+\newblock 2025.
+\newblock Available at: ~{\small\url{https://arxiv.org/abs/2502.15242}}.
 
 \bibitem{wei2023jailbroken}
 {\sc\bgroup}Wei{\egroup}, A.; {\sc\bgroup}Haghtalab{\egroup}, N.
@@ -53,7 +66,8 @@
 
 \bibitem{zou2023universal}
 {\sc\bgroup}Zou{\egroup}, A.; {\sc\bgroup}Wang{\egroup}, Z.;
-  {\sc\bgroup}Kolter{\egroup}, Z. and~{\sc\bgroup}Fredrikson{\egroup}, M.
+  {\sc\bgroup}Carlini{\egroup}, N.; {\sc\bgroup}Nasr{\egroup}, M.;
+  {\sc\bgroup}Kolter{\egroup}, J.~Z. et~al.
 \newblock {\em Universal and Transferable Adversarial Attacks on Aligned
   Language Models}.
 \newblock 2023.
