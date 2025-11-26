@@ -1,6 +1,6 @@
 \makeatletter
 \makeatother
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{belaire2025automatic}
 {\sc\bgroup}Belaire{\egroup}, R.; {\sc\bgroup}Sinha{\egroup}, A.
@@ -16,6 +16,15 @@
 \newblock 2023.
 \newblock Available at:
   ~{\small\url{https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4461195}}.
+
+\bibitem{munoz2024pyrit}
+{\sc\bgroup}Munoz{\egroup}, G. D.~L.; {\sc\bgroup}Minnich{\egroup}, A.~J.;
+  {\sc\bgroup}Lutz{\egroup}, R.; {\sc\bgroup}Lundeen{\egroup}, R.;
+  {\sc\bgroup}Dheekonda{\egroup}, R. S.~R. et~al.
+\newblock {\em Pyrit: A framework for security risk identification and red
+  teaming in generative ai system}.
+\newblock 2024.
+\newblock Available at: ~{\small\url{https://arxiv.org/abs/2410.02828}}.
 
 \bibitem{openai2024redteaming}
 {\sc\bgroup}OpenAI{\egroup}.

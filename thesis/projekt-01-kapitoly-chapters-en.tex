@@ -8,47 +8,22 @@
 
 \chapter{Introduction}\label{ch:introduction}
 
-The rapid advancement and widespread deployment of large language models (LLMs) such as GPT-5.1, Claude 4.5, Gemini 3 and others have transformed natural-language interaction with computers.
+The rapid advancement and widespread deployment of large language models (LLMs) such as GPT-5.1, Claude Sonnet 4.5, Gemini 3 and others have transformed natural-language interaction with computers.
 These models power chatbots, code assistants, translation services, and creative tools used daily by millions of users.
 
 However, their remarkable capabilities come with significant safety and ethical risks.
-LLMs can generate harmful, biased, misleading, or illegal content when subjected to carefully crafted adversarial inputs, a practice commonly known as \emph{jailbreaking}~\cite{wei2023jailbroken},~\cite{zou2023universal}.
+LLMs can generate harmful, biased, misleading, or illegal content when subjected to carefully crafted adversarial inputs, a practice commonly known as \emph{jailbreaking}~\cite{wei2023jailbroken, zou2023universal}.
 
-Real-world incidents such as ChatGPT being tricked into providing bomb-making instructions~\cite{yaser2023potential}, or Gemini's image-generation controversy~\cite{andrew2025agonistic}, have demonstrated that even heavily aligned commercial models remain vulnerable.
-
-Red teaming, cybersecurity technique involving simulated attacks to expose vulnerabilities, has been adopted by leading AI organisations (OpenAI, Anthropic, Google DeepMind, Meta AI) as a core component of LLM safety evaluation~\cite{openai2024redteaming}.
+Real-world incidents such as ChatGPT being tricked into providing bomb-making instructions~\cite{yaser2023potential}, or Gemini's image-generation controversy~\cite{andrew2025agonistic}, have demonstrated that even flagship commercial models remain vulnerable.
+In response, red teaming, a cybersecurity technique involving simulated attacks to expose vulnerabilities, has been adopted by leading AI organisations (OpenAI, Anthropic, Google DeepMind, Meta AI) as a core component of LLM safety evaluation~\cite{openai2024redteaming}.
 
 With the adoption of the EU AI Act in 2024, systematic risk assessment including red teaming will become a legal requirement for high-risk AI systems deployed in the European Union from 2026 onward~\cite{eu2024aiact}.
+Consequently, efficient, reproducible, and extensible red-teaming tools are no longer a luxury but an essential part of responsible AI development as it will be a legal requirement in the future.
 
-Consequently, efficient, reproducible, and extensible red-teaming tools are no longer a luxury but an essential part of responsible AI development.
-
-Despite significant progress, most existing open-source red-teaming frameworks suffer from limited modularity, poor support for multi-turn conversations, inadequate multilingual harm detection, or steep learning curves that hinder adoption by smaller research teams and individual developers~\cite{purpur2025building, schoepf2025madmax, belaire2025automatic}.
-
-This creates a clear need for a new, developer-friendly toolkit that lowers the barrier to systematic safety testing.
+Despite significant progress, most existing open-source red-teaming frameworks suffer from limited modularity, poor support for modern systems, query cost and computational requirements, etc., that hinder adoption by smaller research teams and individual developers~\cite{purpur2025building, schoepf2025madmax, belaire2025automatic, munoz2024pyrit}.
+This creates a clear need for a new, lightweight, developer-friendly red-teaming toolkit that lowers the barrier to LLM systematic safety testing.
 
 The main goal of this bachelor's thesis is therefore the design, implementation, and evaluation of a modular open-source red-teaming toolkit for large language models that addresses the identified shortcomings of current solutions.
-
-The specific objectives assigned for this work are:
-
-\begin{enumerate}
-    \item To study the current state of research in red-teaming of large language models, including attack tactics (jailbreaking, prompt injection, multi-turn adversarial prompts), threat types, and contemporary safety evaluation approaches.
-    \item To perform a survey of existing open-source tools and frameworks for LLM red-teaming (e.g. PyRIT, Garak, MAD-MAX), analyse their architectures, advantages, and limitations.
-    \item To propose a modular architecture of a new red-teaming toolkit that enables detection of LLM weaknesses, definition of various attack types, automation of testing scenarios, and structured result evaluation.
-    \item To implement a functional prototype supporting both manual and automated attack generation and evaluation on selected models (e.g. Llama 3, GPT-OSS).
-    \item To test the system's functionality, focusing on attack success rate and robustness of the testing environment.
-\end{enumerate}
-
-The present document submitted in the winter semester 2025/2026 covers objectives 1--3 (literature review, survey of existing solutions, and architectural design).
-
-The implementation and experimental evaluation (objectives 4--5) will be completed in the summer semester 2026.
-
-The thesis is structured as follows: Chapter~\ref{ch:background} provides background on LLM safety risks and red-teaming methodology.
-
-Chapter~\ref{ch:existing-tools} surveys and compares current open-source red-teaming frameworks.
-
-Chapter~\ref{ch:architecture} presents the proposed modular architecture and its key components.
-
-The implementation, experimental evaluation, and overall conclusions will be added in the final version of this thesis.
 
 %=========================================================================
 
