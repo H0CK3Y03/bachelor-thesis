@@ -25,6 +25,90 @@ This creates a clear need for a new, lightweight, developer-friendly red-teaming
 
 The main goal of this bachelor's thesis is therefore the design, implementation, and evaluation of a modular open-source red-teaming toolkit for large language models that addresses the identified shortcomings of current solutions.
 
+\chapter{Background and Related Work}\label{ch:background}
+
+This chapter provides the theoretical and practical foundation necessary for understanding the problem of safety evaluation of large language models and for the subsequent design of the proposed red-teaming toolkit.
+It first introduces the architecture and training paradigm of modern LLMs with emphasis on alignment techniques that are intended to make them safe.
+
+Subsequently, the most important categories of safety risks and known attack techniques are described.
+The final part of the chapter is devoted to red-teaming methodology, its role in current safety pipelines, and the metrics and benchmarks used for quantitative evaluation.
+
+\section{Large Language Models and Alignment}
+\label{sec:llms-alignment}
+
+Large language models (LLMs) are transformer-based neural networks \cite{vaswani2017attention} trained on internet-scale text corpora using self-supervised next-token prediction. The largest publicly available models in 2025 exceed 400 billion parameters (e.g. Llama 3.1 405B \cite{dubey2024llama3herdmodels}, Qwen-2.5-72B \cite{qwen2025}), while closed proprietary models such as GPT-4o, Claude 3.5 Sonnet, or Gemini 1.5 Pro are estimated to be significantly larger.
+
+Raw pre-trained models reflect statistical patterns of their training data and readily generate toxic, biased, or factually incorrect content. To make them helpful and harmless, virtually all deployed LLMs undergo some form of alignment — a process that typically consists of two stages:
+
+\begin{enumerate}
+  \item \textbf{Supervised Fine-Tuning (SFT)} on high-quality instruction-following datasets.
+  \item \textbf{Reinforcement Learning from Human Feedback (RLHF)} \cite{christiano2017deep, ouyang2022training} or its more scalable variants (RLAIF, DPO \cite{rafailov2024direct}, KTO \cite{ethayarajh2024kto}).
+\end{enumerate}
+
+Despite considerable effort invested in alignment, numerous studies have shown that safety training can be bypassed using carefully crafted prompts \cite{wei2023jailbroken, zou2023universal, perez2022ignore, chao2024jailbreak}.
+
+\section{Safety Risks in Large Language Models}
+\label{sec:safety-risks}
+
+Current safety taxonomies distinguish several broad categories of harmful behaviour \cite{weidinger2021ethical, openai2023gpt4systemcard, vidgen2024introducing}:
+
+\begin{itemize}
+  \item \textbf{Malicious use} — assisting users in illegal or dangerous activities (bomb-making instructions, synthesis of controlled substances, etc.).
+  \item \textbf{Discrimination and bias} — generation of content that unfairly disadvantages protected groups.
+  \item \textbf{Misinformation and disinformation}.
+  \item \textbf{Self-harm and suicide promotion}.
+  \item \textbf{Sexual content involving minors}.
+  \item \textbf{Privacy violations} — leaking training data or personal information.
+\end{itemize}
+
+The Anthropic Harm Benchmark \cite{anthropic2024harmbench} and subsequent work further divide harms into more than 30 fine-grained categories that are used in most contemporary red-teaming efforts.
+
+\section{Red Teaming of Language Models}
+\label{sec:red-teaming}
+
+Red teaming originated in military and cybersecurity contexts as simulated adversary attacks aimed at discovering system weaknesses before real attackers do \cite{redteamhistory}. In the context of LLMs, red teaming denotes the systematic search for inputs (prompts) that cause a model to violate its safety policies despite alignment training \cite{perez2022redteaming, ganguli2022red}.
+
+Modern red-teaming approaches can be classified into three main families:
+
+\begin{enumerate}
+  \item \textbf{Manual red teaming} — human experts craft adversarial prompts. Extremely effective but expensive and non-reproducible.
+  \item \textbf{Rule-based and template attacks} — large collections of known jailbreak templates (e.g. DAN, evil-confidant) \cite{yong2023lowresource}.
+  \item \textbf{Automated red teaming} — algorithms that generate or evolve harmful prompts:
+    \begin{itemize}
+      \item Gradient-based methods (GBDA \cite{zou2023universal}, AutoDAN \cite{zhu2024autodan}).
+      \item Evolutionary and genetic algorithms (GCG variants, PAIR \cite{chao2024jailbreak}).
+      \item LLM-as-attackers (TAP \cite{mezera2024tap}, Judge-LM attacks).
+    \end{itemize}
+\end{enumerate}
+
+\section{Common Attack Techniques}
+\label{sec:attack-techniques}
+
+The most studied attack classes in 2024–2025 include:
+
+\begin{description}
+  \item[Single-turn jailbreaking] Direct prompts that override safety training (e.g. role-play, base64 encoding, cipher prompts) \cite{yi2024survey}.
+  \item[Prompt injection] Hijacking of system prompts in applications that concatenate user input with hidden instructions \cite{greshake2023not}.
+  \item[Multi-turn (conversational) jailbreaks] Gradual manipulation over several turns, often exploiting context window or memory \cite{mehdi2024multi}.
+  \item[Suffix attacks and transferable attacks] Short universal suffixes discovered via optimisation that work across many models \cite{zou2023universal}.
+  \item[Data poisoning and backdoor attacks] (less frequent in red teaming of already-trained models).
+\end{description}
+
+\section{Evaluation Metrics and Benchmarks}
+\label{sec:metrics}
+
+The most widely adopted quantitative metrics are:
+
+\begin{itemize}
+  \item \textbf{Attack Success Rate (ASR)} — percentage of generated prompts that elicit harmful output \cite{zou2023universal}.
+  \item \textbf{HarmBench} — comprehensive benchmark with 35+ behavioural categories and both rule-based and LLM judges \cite{mazeika2024harmbench}.
+  \item \textbf{StrongREJECT} — recent 2025 benchmark focusing on difficult multi-turn and refusal-suppression scenarios \cite{strongreject2025}.
+  \item \textbf{WildBench}, \textbf{Arena-Hard}, and commercial leaderboards (LMSYS Chatbot Arena with safety subset).
+\end{itemize}
+
+Automated judges themselves fall into two categories: fast but limited regex/keyword classifiers and more accurate (but expensive) LLM-as-a-judge systems \cite{zheng2024judging}.
+
+The overview presented in this chapter shows that while the research community has developed a rich taxonomy of harms and a variety of attack techniques, the availability of flexible, modular, and easy-to-extend open-source tools that combine manual exploration with state-of-the-art automated methods remains limited — a gap that existing frameworks only partially address. This motivates the detailed survey of current open-source red-teaming toolkits presented in the next chapter.
 %=========================================================================
 
 % For compilation piecewise (see projekt.tex), it is necessary to uncomment it
