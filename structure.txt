@@ -1,0 +1,41 @@
+Introduction (2–3 pages)
+Background and Related Work (8–10 pages)
+2.1 Large Language Models and Alignment
+2.2 Safety Risks in LLMs
+2.3 Red Teaming – Definition and Importance
+2.4 Common Attack Categories (jailbreaking, prompt injection, multi-turn, data poisoning, etc.)
+2.5 Evaluation Metrics and Benchmarks (safety, robustness, harm categories)
+Existing Red-Teaming Tools and Frameworks (10–12 pages) – this will be the biggest chapter now
+3.1 Microsoft PyRIT (Python Risk Identification Toolkit)
+3.2 Garak (HuggingFace)
+3.3 MAD-MAX (Modular Adversarial Red Teaming)
+3.4 Armory (MITRE)
+3.5 LLM Guard, RedTeam.AI, Promptfoo, Scale Spellbook, etc.
+3.6 Comparative table (architecture, supported attacks, automation level, extensibility, licence, last update, community activity)
+3.7 Identified Gaps and Limitations (this directly leads to your contribution)
+Proposed Toolkit Design (8–10 pages) – this is your real contribution for the semester
+4.1 Requirements and Goals
+4.2 High-level Architecture (diagram!)
+4.3 Core Modules
+– Attack Generator (templates, evolutionary, tree-of-thought, etc.)
+– Target Interface (OpenAI API, Ollama, HuggingFace, vLLM, local models)
+– Judge/Evaluator (regex, LLM-as-a-judge, BERT-based classifiers, multilingual)
+– Orchestrator / Scenario Engine (manual mode ↔ automatic mode)
+– Reporting & Persistence
+4.4 Data Model (harm categories, attack taxonomy)
+4.5 Planned Technology Stack (Python 3.11+, Pydantic, LangChain/LangGraph or Haystack, Rich/Click CLI, etc.)
+4.6 Comparison with Existing Solutions (why yours is better / more modular / easier to extend)
+Implementation (will be added next semester, ~20–25 pages)
+Evaluation and Testing (next semester, ~12–15 pages)
+Conclusion (3–4 pages)
+– Summary of achieved goals
+– Contribution
+– Limitations
+– Future work (multi-modal, agentic attacks, integration with CI/CD, etc.)
+
+Bibliography (already start collecting now, use the ISO 690 standard that FIT uses)
+Appendices
+A. Detailed attack examples
+B. Full comparison table
+C. API documentation of your toolkit
+D. CD content description
