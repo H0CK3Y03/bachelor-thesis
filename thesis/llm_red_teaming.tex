@@ -11,11 +11,11 @@
 % zpracování / processing: make, make pdf, make clean
 %==============================================================================
 % Soubory, které je nutné upravit nebo smazat: / Files which have to be edited or deleted:
-%   projekt-20-literatura-bibliography.bib - literatura / bibliography
+%   llm_red_teaming-20-literatura-bibliography.bib - literatura / bibliography
 %   projekt-01-kapitoly-chapters.tex - obsah práce / the thesis content
-%   projekt-01-kapitoly-chapters-en.tex - obsah práce v angličtině / the thesis content in English
+%   llm_red_teaming-01-kapitoly-chapters-en.tex - obsah práce v angličtině / the thesis content in English
 %   projekt-30-prilohy-appendices.tex - přílohy / appendices
-%   projekt-30-prilohy-appendices-en.tex - přílohy v angličtině / appendices in English
+%   llm_red_teaming-30-prilohy-appendices-en.tex - přílohy v angličtině / appendices in English
 %==============================================================================
 \documentclass[english]{fitthesis} % bez zadání - pro začátek práce, aby nebyl problém s překladem
 %\documentclass[english]{fitthesis} % without assignment - for the work start to avoid compilation problem
@@ -274,7 +274,7 @@ I have listed all the literary sources, publications and other sources, which we
   % Text prace / Thesis text
   % ----------------------------------------------
   \ifenglish
-    \input{projekt-01-kapitoly-chapters-en}
+    \input{llm_red_teaming-01-kapitoly-chapters-en}
   \else
     \input{projekt-01-kapitoly-chapters}
   \fi
@@ -307,7 +307,7 @@ I have listed all the literary sources, publications and other sources, which we
   \fi
 \fi
   \begin{flushleft}
-  \bibliography{projekt-20-literatura-bibliography}
+  \bibliography{llm_red_teaming-20-literatura-bibliography}
   \end{flushleft}
 
   % vynechani stranky v oboustrannem rezimu
@@ -367,7 +367,7 @@ I have listed all the literary sources, publications and other sources, which we
   
   % Přílohy / Appendices
   \ifenglish
-    \input{projekt-30-prilohy-appendices-en}
+    \input{llm_red_teaming-30-prilohy-appendices-en}
   \else
     \input{projekt-30-prilohy-appendices}
   \fi

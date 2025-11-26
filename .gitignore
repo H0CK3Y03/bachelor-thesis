@@ -1,0 +1,14 @@
+*.dvi
+*.log
+*.toc
+*.synctex.gz
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.out
+*.ptc
+latexmk_console.txt
+latexmk_out.txt
