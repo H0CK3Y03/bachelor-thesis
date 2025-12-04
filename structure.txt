@@ -39,3 +39,6 @@ A. Detailed attack examples
 B. Full comparison table
 C. API documentation of your toolkit
 D. CD content description
+
+
+-- RECOMMENDATIONS --
