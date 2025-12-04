@@ -42,3 +42,21 @@ D. CD content description
 
 
 -- RECOMMENDATIONS --
+
+Quick review & suggested edits
+
+Overall structure & flow — good. The chapters and subsections flow logically from LLMs → risks → red-teaming → gaps.
+
+References / placeholders: I noticed some non-standard citation keys in the body (e.g., \cite{turn0search9}, \cite{turn0search32}) — make sure these map to entries in your .bib. Replace any transient/web-run keys with stable BibTeX keys.
+
+Model names & claims: the intro names several concrete commercial models (GPT-5.1, Claude Sonnet 4.5, Gemini 3). If these are speculative or internal-version names, either (a) provide precise citations for each, or (b) rephrase generically (e.g., “recent commercial models from major vendors”) to avoid being inaccurate.
+
+Date-sensitive claims & examples: e.g., “With the adoption of the EU AI Act in 2024…” — keep dates specific (you already did), and ensure any claims about deadlines (e.g., “from 2026 onward”) cite a legal text or official guidance.
+
+Balance citations for key claims: Some paragraphs (e.g., on multi-turn red teaming and automated RL-based methods) refer to recent 2024–2025 papers — good — but make sure the bibliography contains the exact references and versions (conference/workshop, arXiv id or DOI).
+
+Benchmarks / tools table: Table is excellent. Consider adding a “License” column (MIT/Apache/GPL/proprietary) and a “Repo URL” column (or footnote) so readers can quickly access each tool.
+
+Judge / evaluation discussion: you discuss judge reliability— consider adding a short paragraph on human-in-the-loop calibration (e.g., inter-annotator agreement, how many human labels to calibrate an LLM-judge).
+
+Grammar / style: a few long sentences can be shortened for readability (e.g., the opening sentence of the Introduction). Overall fine.
