@@ -67,3 +67,208 @@ D. CD content description
 Někdy je potřeba do příloh umístit diagram, který se nevejde na stránku formátu A4. Pak je možné vložit jednu stránku formátu A3 a do práce ji poskládat (tzv. skládání do~Z, kdy se vytvoří dva sklady -- lícem dolů a lícem nahoru, angl. Engineering fold -- existuje i~anglický pojem Z-fold, ale při tom by byl problém s vazbou). Přepnutí se provádí následovně: \texttt{\textbackslash{}eject \textbackslash{}pdfpagewidth=420mm} (pro přepnutí zpět pak 210mm).
 
 Další často využívané příkazy naleznete ve zdrojovém textu ukázkového obsahu této šablony.
+
+
+
+============== Implementation ===============
+Recommended stack (small, modern, pragmatic)
+
+CLI: Typer (friendly, auto-help, async support).
+
+Async runtime: asyncio (stdlib) — simple and widely understood.
+
+Async HTTP/HTTP-like clients: httpx (async) for API backends; aiofiles for async file IO if needed.
+
+Retries/backoff: tenacity (sync/async support).
+
+Rate-limiting: aiolimiter or implement a small token-bucket/semaphore.
+
+Config/manifest parsing: pydantic (v2) models for manifest schema validation; load YAML via PyYAML / ruamel.yaml.
+
+Logging: stdlib logging + python-json-logger or structlog for structured JSON logs (JSONL).
+
+Plugin discovery: importlib.metadata.entry_points (pyproject entry-points) or a lightweight plugin loader.
+
+Model runtimes: use llama-cpp-python (if using llama locally) or subprocess wrapper for llama.cpp; for API adapters use httpx.
+
+Optional small index: sqlite3 or sqlite-utils for fast UI queries.
+
+Testing: pytest, mocking via respx (for httpx), pytest-asyncio.
+
+Packaging / deploy: Docker + docker-compose.
+
+Orchestrator responsibilities (concise)
+
+Load & validate experiment manifest (pydantic).
+
+Instantiate attack generator plugin (via entry-point) with generator config.
+
+Request candidate prompts (streaming or batch) from generator.
+
+Send prompts to model adapter(s) via async API and gather responses.
+
+Submit responses to judge pipeline (heuristics → classifier → LLM-judge).
+
+Append structured events to JSONL log store (atomic writes).
+
+Handle rate-limits, retries, timeouts, and backoff.
+
+Provide CLI commands for run, validate, health-check, resume.
+
+Optionally expose /metrics and health endpoints for monitoring (aiohttp + prometheus_client).
+
+CLI surface (Typer)
+
+rt run manifest.yml — run an experiment, stream progress to console.
+
+rt validate manifest.yml — validate manifest schema and adapters availability.
+
+rt resume <experiment_id> — resume from JSONL checkpoint.
+
+rt healthcheck — run adapter/judge health checks.
+
+rt list-plugins — show discovered adapters / generators / judges.
+
+Manifest knobs the orchestrator consumes
+
+Include these fields (pydantic models):
+
+experiment_id, author, seed
+
+model: { adapter: "llama-local", config: {...} }
+
+generator: { name: "template", config: {...} }
+
+judge_pipeline: [ "heuristic", "classifier", "llm-judge" ]
+
+concurrency, rate_limit_per_minute, batch_size, timeout_seconds
+
+output_path (dir / JSONL file), resume: bool
+
+(This makes the orchestrator the single source of runtime config.)
+
+Concurrency, rate limiting & resource control
+
+Use an asyncio Semaphore(max_concurrency) to bound concurrent model calls.
+
+Enforce adapter-level rate-limits (per manifest) using aiolimiter per adapter.
+
+Use tenacity for exponential backoff on transient errors.
+
+For local heavy work (e.g., large local model) run in a separate process or service to avoid blocking event loop — talk to it via HTTP or RPC.
+
+Logging / JSONL writing (practical)
+
+Use structured logging (JSON) for orchestrator events.
+
+For trial results, append atomic JSON lines to experiment_id.jsonl. Use aiofiles or sync writes with file lock: open file in append mode and write json.dumps(record) + "\n" — flush on write.
+
+Keep a checkpoint event type trial_checkpoint periodically so resume can use last processed prompt_id.
+
+Keep logs append-only; do not edit previous lines (helps auditability).
+
+Judge interaction & state feedback
+
+Judges should return a structured Verdict object. The orchestrator should:
+
+always persist the verdict to JSONL,
+
+optionally feed verdicts back to the generator/orchestrator (for multi-turn adaptive generators).
+
+Implement a configurable callback path in the manifest: on_verdict: { action: "generator_feedback", policy: "stop_if_success" } so orchestrator can decide how to proceed after verdicts.
+
+Observability / metrics
+
+Expose Prometheus metrics via prometheus_client (requests/s, success rate, avg latency, queue length).
+
+Add a /health endpoint that checks adapters & judges (use a small aiohttp server).
+
+Security / sandboxing
+
+Run untrusted generator plugins in subprocesses or containers. Use multiprocessing or subprocess with timeouts.
+
+For extreme containment, run third-party plugins inside Docker with restricted mounts and network policies.
+
+Never automatically execute model outputs (no auto-run code).
+
+Resilience & reproducibility features
+
+Deterministic seeding: set random.seed(manifest.seed), numpy.random.seed(...) where relevant and pass seeds to generators.
+
+Checkpointing: write a state event periodically to allow resuming.
+
+Idempotency: use prompt_id and verdict_id UUIDs so reruns can be deduplicated.
+
+Small orchestration pseudo-code (illustrative)
+# conceptual: not full code
+import asyncio, uuid, json, logging
+from aiolimiter import AsyncLimiter
+
+async def run_experiment(manifest):
+    generator = load_generator(manifest.generator)
+    adapter = load_adapter(manifest.model.adapter)
+    judge = load_judge_pipeline(manifest.judge_pipeline)
+
+    sem = asyncio.Semaphore(manifest.concurrency)
+    limiter = AsyncLimiter(manifest.rate_limit, time_period=60)  # per minute
+
+    async for prompt in generator.stream():
+        await limiter.acquire()
+        await sem.acquire()
+        asyncio.create_task(process_trial(prompt, adapter, judge, sem))
+
+async def process_trial(prompt, adapter, judge, sem):
+    try:
+        resp = await adapter.generate(prompt, config=...)
+        verdict = await judge.evaluate(resp, prompt)
+        await append_jsonl(log_path, make_event(prompt, resp, verdict))
+    finally:
+        sem.release()
+
+Example adapter & plugin pattern notes
+
+Adapter is an abstract base class with generate() and health_check().
+
+Use entry_points to register plugins, e.g. redteaming.adapters = ["llama_local = mypkg.adapters:LLamaAdapter"].
+
+Load via importlib.metadata.entry_points().select(group="redteaming.adapters").
+
+Testing & CI
+
+Unit test model adapters by mocking responses (use respx for httpx).
+
+Use a deterministic mock adapter for CI to simulate different behaviours (refusal, hallucination, long latency).
+
+Add integration tests that run a small manifest against llama-cpp-python or the mock adapter.
+
+Minimal production/dev Docker hints
+
+Compose services:
+
+orchestrator (python app)
+
+llama-runtime (if needed) or run adapter in orchestrator container
+
+ui (reads JSONL)
+
+sqlite (optional)
+
+Mount logs volume to host for easy inspection.
+
+Quick summary / recommended choices
+
+CLI: Typer
+
+Async core: asyncio + httpx + aiolimiter
+
+Manifest validation: pydantic (YAML/JSON)
+
+Retries: tenacity
+
+Logging/JSONL: structured JSON with python-json-logger (append-only file per experiment)
+
+Plugin discovery: importlib.metadata.entry_points
+
+Sandbox plugins: subprocess / containers for untrusted code
+
+Local default model: llama-cpp-python (adapter) — keeps cost free for judge & basic
