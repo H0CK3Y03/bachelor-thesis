@@ -41,293 +41,234 @@ C. API documentation of your toolkit
 D. CD content description
 
 
--- RECOMMENDATIONS --
 
-Benchmarks / tools table: Table is excellent. Consider adding a “License” column (MIT/Apache/GPL/proprietary) and a “Repo URL” column (or footnote) so readers can quickly access each tool.
+% Využití \begin{figure*} způsobí, že obrázek zabere celou šířku stránky. Takový obrázek dříve mohl být pouze na začátku stránky, případně na konci s využitím balíčku dblfloatfix (případné [h] se ignorovalo a [H] obrázek odstraní). Nové verze LaTeXu už umí i [h].
+\begin{figure*}[h]\centering
+  \centering
+  \includegraphics[width=\linewidth,height=1.7in]{obrazky-figures/placeholder.pdf}\\[1pt]
+  \includegraphics[width=0.24\linewidth]{obrazky-figures/placeholder.pdf}\hfill
+  \includegraphics[width=0.24\linewidth]{obrazky-figures/placeholder.pdf}\hfill
+  \includegraphics[width=0.24\linewidth]{obrazky-figures/placeholder.pdf}\hfill
+  \includegraphics[width=0.24\linewidth]{obrazky-figures/placeholder.pdf}
+  \caption{\textbf{Široký obrázek.} Obrázek může být složen z více menších obrázků. Chcete-li se na tyto dílčí obrázky odkazovat z textu, využijte balíček \texttt{subcaption}.}
+  \label{sirokyObrazek}
+\end{figure*}
 
-Judge / evaluation discussion: you discuss judge reliability— consider adding a short paragraph on human-in-the-loop calibration (e.g., inter-annotator agreement, how many human labels to calibrate an LLM-judge).
+% Odkomentujte pro přepnutí na formát A3 na šířku
+% \eject \pdfpagewidth=420mm
 
-Grammar / style: a few long sentences can be shortened for readability (e.g., the opening sentence of the Introduction). Overall fine.
+\begin{figure}[hbt]
+	\centering
+	\includegraphics[width=0.3\textwidth]{obrazky-figures/keep-calm.png}
+	\caption{Dobrý text je špatným textem, který byl několikrát přepsán. Nebojte se prostě něčím začít.}
+	\label{keepCalm}
+\end{figure}
 
+Někdy je potřeba do příloh umístit diagram, který se nevejde na stránku formátu A4. Pak je možné vložit jednu stránku formátu A3 a do práce ji poskládat (tzv. skládání do~Z, kdy se vytvoří dva sklady -- lícem dolů a lícem nahoru, angl. Engineering fold -- existuje i~anglický pojem Z-fold, ale při tom by byl problém s vazbou). Přepnutí se provádí následovně: \texttt{\textbackslash{}eject \textbackslash{}pdfpagewidth=420mm} (pro přepnutí zpět pak 210mm).
 
+Další často využívané příkazy naleznete ve zdrojovém textu ukázkového obsahu této šablony.
 
-Nice — this is a *very* strong Chapter 1–2 draft: clear structure, correct scope, good coverage of attack types and tooling, and a useful comparison table. Below I give a focused, actionable review so you can quickly tighten content, fix citation and LaTeX problems, and improve scientific rigor.
 
-I’ll organize feedback into: **(A)** major content / correctness issues you should fix, **(B)** citation and bibliographic checks, **(C)** stylistic / LaTeX suggestions, **(D)** suggested additions (gaps to fill), and **(E)** concrete next steps (what I can do for you). I keep suggestions practical so you can iterate quickly.
 
----
+============== Implementation ===============
+Recommended stack (small, modern, pragmatic)
 
-# A. Major content & correctness issues (must-fix)
+CLI: Typer (friendly, auto-help, async support).
 
-1. **`todo` markers left in text.**
+Async runtime: asyncio (stdlib) — simple and widely understood.
 
-   * Lines: “quantization-aware training)todo~\cite{10.1145/3649329.3663517}” and “unintended behaviors … todo”. Remove `todo` and either finish the sentence or delete it. These will fail compilation and look unprofessional.
+Async HTTP/HTTP-like clients: httpx (async) for API backends; aiofiles for async file IO if needed.
 
-2. **Some claims need stronger sourcing or softer phrasing.**
+Retries/backoff: tenacity (sync/async support).
 
-   * E.g., “With the adoption of the EU AI Act in 2024, systematic risk assessment including red teaming will become a legal requirement …” — better to weaken to “the EU AI Act (2024) strengthens requirements for risk assessment of high-risk systems and makes adversarial and robustness testing an expected element of compliance in many cases.” Laws are nuanced; avoid categorical legal claims without specific article references. You already cite the EU regulation — consider citing the specific article/recital.
+Rate-limiting: aiolimiter or implement a small token-bucket/semaphore.
 
-3. **Overbroad claims about tools and state of field need concrete evidence.**
+Config/manifest parsing: pydantic (v2) models for manifest schema validation; load YAML via PyYAML / ruamel.yaml.
 
-   * You state that most OSS frameworks “suffer from limited modularity, poor support… query cost and computational requirements”. Back each limitation with concrete references or examples (you cite Purpura/MAD-MAX/Belaire — tie each limitation to a specific framework or study).
+Logging: stdlib logging + python-json-logger or structlog for structured JSON logs (JSONL).
 
-4. **Bibliographic validity — check that all cited arXiv papers exist and have the IDs you list.**
+Plugin discovery: importlib.metadata.entry_points (pyproject entry-points) or a lightweight plugin loader.
 
-   * You reference many 2024–2025 preprints. Verify each arXiv ID/URL; supervisors will check. (I flag this again in section B.)
+Model runtimes: use llama-cpp-python (if using llama locally) or subprocess wrapper for llama.cpp; for API adapters use httpx.
 
-5. **Table: don’t use grey text `\textcolor{gray}{Partial}` for capabilities in final thesis.**
+Optional small index: sqlite3 or sqlite-utils for fast UI queries.
 
-   * Replace with clear “Partial” or “Limited” (no colored text unless thesis template allows it). Also ensure the packages used support `tabularx` and `\textcolor`.
+Testing: pytest, mocking via respx (for httpx), pytest-asyncio.
 
-6. **Evaluation section: clarify judge procedures and human evaluation.**
+Packaging / deploy: Docker + docker-compose.
 
-   * You correctly note judge reliability metrics, but you need to explain how you will evaluate judges in your experiments (calibration, gold labels, annotator instructions). Point to standard inter-annotator measures (Cohen’s κ, Krippendorff’s α) and explain how you’ll combine human+automated judgments.
+Orchestrator responsibilities (concise)
 
----
+Load & validate experiment manifest (pydantic).
 
-# B. Citation / bibliography issues (important)
+Instantiate attack generator plugin (via entry-point) with generator config.
 
-1. **Verify existence and exact metadata of each cited work.** A number of entries look plausible but must be checked for exact year/title/URL formatting. Examples to double-check:
+Request candidate prompts (streaming or batch) from generator.
 
-   * `openai2024redteaming` — you list OpenAI blog (2023) but cite as 2024 in the bib key. Make year consistent with the source.
-   * `yaser2023potential` — SSRN working paper is fine, but check that it’s appropriate as a source for “ChatGPT being tricked into providing bomb-making instructions” (prefers a mainstream news or peer-reviewed source for event claims).
-   * `shaw2025agonistic` and several 2025 arXiv preprints — confirm availability by the date you'll submit and make sure arXiv numbers are correct.
-   * `owasp2025llm` — OWASP cheat sheets are valid but ensure the URL and year are correct (OWASP pages are often living documents; include access date).
-2. **Missing classic citations for alignment / RLHF.** Add canonical references:
+Send prompts to model adapter(s) via async API and gather responses.
 
-   * **InstructGPT / RLHF**: e.g., Ouyang et al., “Training language models to follow instructions with human feedback” (DeepMind / OpenAI works—InstructGPT/2022). Cite the original RLHF / PPO works or DPO paper if you mention DPO.
-   * **PPO**: Schulman et al. (PPO) for the algorithmic reference.
-3. **When you cite real incidents (ChatGPT, Gemini), use reputable sources.**
+Submit responses to judge pipeline (heuristics → classifier → LLM-judge).
 
-   * For safety incidents cite mainstream press (NYT, WSJ, Wired) or official vendor blog posts describing the incident. If you rely on academic analysis of incidents, cite peer-reviewed / arXiv analyses.
+Append structured events to JSONL log store (atomic writes).
 
----
+Handle rate-limits, retries, timeouts, and backoff.
 
-# C. Stylistic & LaTeX / formatting suggestions (quick wins)
+Provide CLI commands for run, validate, health-check, resume.
 
-1. **Keep consistent citation spacing:** use `~\cite{...}` everywhere (you already do this mostly). Be consistent in use of parentheses vs. in-text citations.
-2. **Avoid “etc.” and vague phrases.** Replace with concrete examples or remove.
-3. **Use consistent capitalization for section titles and acronyms.** E.g., LLM vs Llm, Red Teaming vs red-teaming — choose one style and stick to it (I suggest “red-teaming” lower case except at sentence start).
-4. **Table readability:**
+Optionally expose /metrics and health endpoints for monitoring (aiohttp + prometheus_client).
 
-   * Make `\footnotesize` only if necessary. Consider splitting large tables into two if width looks cramped.
-   * Use consistent boolean markers for multi-turn capability (Yes / No / Partial) rather than colors.
-   * Add a short explanation of how you measured “Key Strengths / Limitations” (source: paper claims, our experiments, documentation).
-5. **Avoid long comma-lists in paragraphs; prefer short sentences.** This improves clarity for examiners.
-6. **Spellcheck & grammar:** run `texstudio`/`overleaf` spellcheck. I noticed a couple of commas and inconsistent hyphenations (e.g., “multi-turn” sometimes hyphenated, sometimes not).
+CLI surface (Typer)
 
----
+rt run manifest.yml — run an experiment, stream progress to console.
 
-# D. Suggested content additions (to strengthen the chapter)
+rt validate manifest.yml — validate manifest schema and adapters availability.
 
-1. **Add a short subsection on *ethical considerations* and research safety.**
+rt resume <experiment_id> — resume from JSONL checkpoint.
 
-   * Discuss safe handling of harmful prompts, IRB or supervisor approvals (if applicable), data minimization, and how you’ll prevent misuse of released code/prompts.
-2. **Reproducibility subsection describing experiment artifacts you will release.**
+rt healthcheck — run adapter/judge health checks.
 
-   * State you will publish prompts, seeds, environment specs, Dockerfile, and evaluation logs — or explain constraints if you cannot release some data (e.g., proprietary APIs).
-3. **Add references / short paragraph on standards & guidance:**
+rt list-plugins — show discovered adapters / generators / judges.
 
-   * NIST AI RMF (2023) or other national guidelines that inform risk assessment practices.
-4. **Human annotation protocol (short).**
+Manifest knobs the orchestrator consumes
 
-   * Explain planned annotation scheme, number of raters, instructions, tack how you will compute agreement and resolve disagreements.
-5. **Short diagram or figure showing red-team pipeline.**
+Include these fields (pydantic models):
 
-   * Visuals (attack generator → model backend → judge → logger) help readers understand architecture you later implement.
-6. **Benchmarks beyond HarmBench.** Consider briefly referencing:
+experiment_id, author, seed
 
-   * BigBench / BIG-bench HARMS subsets (if relevant), existing refusal/harms benchmarks (cite Hendrycks et al. works), or other standard evaluation suites.
-7. **Data privacy & licensing note**: if you plan to test on models trained on copyrighted or personal data mention privacy implications and precautions.
+model: { adapter: "llama-local", config: {...} }
 
----
+generator: { name: "template", config: {...} }
 
-# E. Concrete next steps I can do for you (pick any)
+judge_pipeline: [ "heuristic", "classifier", "llm-judge" ]
 
-* I can **clean up the LaTeX** you pasted: remove `todo`s, fix inconsistent hyphenation, and produce a polished LaTeX-ready text with your same content.
-* I can **verify every bib entry** against online sources and produce corrected BibTeX entries (I will flag nonexistent or mismatched entries).
-* I can **redraft specific paragraphs** you want improved (e.g., the EU AI Act paragraph, the judge reliability paragraph) and give ready-to-paste LaTeX snippets.
-* I can **produce a small figure (TikZ/PNG)** showing the red-teaming pipeline to include in Chapter 2.
-* I can **rewrite the table** into a LaTeX-friendly, accessible format (removing colors, improving column widths), and produce code for it.
+concurrency, rate_limit_per_minute, batch_size, timeout_seconds
 
----
+output_path (dir / JSONL file), resume: bool
 
-# Small targeted fixes you can apply right away
+(This makes the orchestrator the single source of runtime config.)
 
-1. Remove `todo` tokens.
-2. Replace `openai2024redteaming` (bib year 2023) with consistent year or change bib key to `openai2023_redteaming`.
-3. Add canonical RLHF citations:
+Concurrency, rate limiting & resource control
 
-   * `@article{ouyang2022training, title={Training language models to follow instructions with human feedback}, ...}` (Ouyang et al., 2022 — InstructGPT / RLHF).
-   * `@inproceedings{schulman2017ppo, ...}` for PPO.
-4. Replace gray-colored table text with plain text.
-5. Add one short sentence in the chapter conclusion about ethical safeguards you will adopt during experiments.
+Use an asyncio Semaphore(max_concurrency) to bound concurrent model calls.
 
----
+Enforce adapter-level rate-limits (per manifest) using aiolimiter per adapter.
 
-If you want, I’ll do one of these *now* — tell me which:
+Use tenacity for exponential backoff on transient errors.
 
-* (1) clean-up the chapter (remove todos, fix small stylistic issues, tighten phrasing) and return the edited LaTeX, **or**
-* (2) validate and correct the BibTeX entries (I’ll flag any suspect/missing items and produce corrected BibTeX).
+For local heavy work (e.g., large local model) run in a separate process or service to avoid blocking event loop — talk to it via HTTP or RPC.
 
-Say which one and I’ll proceed — I’ll perform the work in this reply (no waiting).
+Logging / JSONL writing (practical)
 
+Use structured logging (JSON) for orchestrator events.
 
+For trial results, append atomic JSON lines to experiment_id.jsonl. Use aiofiles or sync writes with file lock: open file in append mode and write json.dumps(record) + "\n" — flush on write.
 
+Keep a checkpoint event type trial_checkpoint periodically so resume can use last processed prompt_id.
 
+Keep logs append-only; do not edit previous lines (helps auditability).
 
-Nice — good decisions. Short answers up front, then concrete edits and a ready-to-paste mapping table you can drop into your thesis.
+Judge interaction & state feedback
 
-**Short answers**
+Judges should return a structured Verdict object. The orchestrator should:
 
-* Remove the `todo` markers. They’re fine while drafting, but they should not remain in the submitted document. Replace them with actual citations (or delete the parenthetical if no citation is needed).
-* Use the **OWASP LLM guidance / Top 10** as a complementary, applied checklist for app-level risks (prompt injection, data leakage, etc.). Don’t replace your taxonomy with OWASP — instead **map your taxonomy to OWASP Top 10 and to bench frameworks (e.g., HarmBench)**. That makes your chapter both academically grounded and practically useful.
-* I’ll give a concrete LaTeX snippet to replace the `todo`s and a ready-to-paste mapping table (taxonomy ↔ OWASP ↔ examples/tests). Drop these into Chapter 2.
+always persist the verdict to JSONL,
 
----
+optionally feed verdicts back to the generator/orchestrator (for multi-turn adaptive generators).
 
-# 1) What to do with the `todo` markers
+Implement a configurable callback path in the manifest: on_verdict: { action: "generator_feedback", policy: "stop_if_success" } so orchestrator can decide how to proceed after verdicts.
 
-* If a `todo` was a placeholder for a citation, replace it with the appropriate existing BibTeX key (you said your `.bib` is fine). If you don’t have a citation, either add one now or remove the `todo` text and keep the sentence as a factual phrasing (or soften it).
-* Example fixes from your draft:
+Observability / metrics
 
-  * `quantization-aware training)todo~\cite{10.1145/3649329.3663517}` → `quantization-aware training~\cite{10.1145/3649329.3663517}.`
-  * `...unintended behaviors that are not trivially predictable — including safety failures, policy evasion, and social-engineering style manipulation.todo` → remove `todo` and, if you want, append an existing citation like `~\cite{wei2023jailbroken}` or `~\cite{zou2023universal}`.
+Expose Prometheus metrics via prometheus_client (requests/s, success rate, avg latency, queue length).
 
-Concretely: search the text for `todo` and replace each with either `.` or `~\cite{<bibkey>}` as appropriate. Don’t leave `todo` in the final draft.
+Add a /health endpoint that checks adapters & judges (use a small aiohttp server).
 
----
+Security / sandboxing
 
-# 2) OWASP Top 10 for LLMs — how to integrate (recommended)
+Run untrusted generator plugins in subprocesses or containers. Use multiprocessing or subprocess with timeouts.
 
-* **Do not replace** your taxonomy with OWASP. Your taxonomy is broader and research-oriented; OWASP is a practical checklist for application developers.
-* **Integrate** OWASP by:
+For extreme containment, run third-party plugins inside Docker with restricted mounts and network policies.
 
-  1. Briefly introducing OWASP as an industry-standard cheat-sheet for app-level LLM threats (cite your `owasp2025llm` entry).
-  2. Adding a short mapping table that shows how your research taxonomy corresponds to OWASP categories and to practical tests you will include in the toolkit/evaluation (this gives both theoretical and applied value).
-  3. In your tooling requirements and evaluation sections, call out OWASP checks as *required* tests for application integrations (prompt sanitation, input-origin validation, policy enforcement at tool boundaries, etc.).
+Never automatically execute model outputs (no auto-run code).
 
-This will make your work useful for both researchers and practitioners.
+Resilience & reproducibility features
 
----
+Deterministic seeding: set random.seed(manifest.seed), numpy.random.seed(...) where relevant and pass seeds to generators.
 
-# 3) Ready-to-paste LaTeX fixes
+Checkpointing: write a state event periodically to allow resuming.
 
-### Replace `todo` examples
+Idempotency: use prompt_id and verdict_id UUIDs so reruns can be deduplicated.
 
-Copy-paste these replacements into your `.tex` where appropriate.
+Small orchestration pseudo-code (illustrative)
+# conceptual: not full code
+import asyncio, uuid, json, logging
+from aiolimiter import AsyncLimiter
 
-**Original**
+async def run_experiment(manifest):
+    generator = load_generator(manifest.generator)
+    adapter = load_adapter(manifest.model.adapter)
+    judge = load_judge_pipeline(manifest.judge_pipeline)
 
-```tex
-employing advanced architectural and optimization features (e.g., mixture-of-experts, retrieval augmentation, quantization-aware training)todo~\cite{10.1145/3649329.3663517}.
-```
+    sem = asyncio.Semaphore(manifest.concurrency)
+    limiter = AsyncLimiter(manifest.rate_limit, time_period=60)  # per minute
 
-**Replace with**
+    async for prompt in generator.stream():
+        await limiter.acquire()
+        await sem.acquire()
+        asyncio.create_task(process_trial(prompt, adapter, judge, sem))
 
-```tex
-employing advanced architectural and optimization features (e.g., mixture-of-experts, retrieval augmentation, quantization-aware training)~\cite{10.1145/3649329.3663517}.
-```
+async def process_trial(prompt, adapter, judge, sem):
+    try:
+        resp = await adapter.generate(prompt, config=...)
+        verdict = await judge.evaluate(resp, prompt)
+        await append_jsonl(log_path, make_event(prompt, resp, verdict))
+    finally:
+        sem.release()
 
-**Original**
+Example adapter & plugin pattern notes
 
-```tex
-...makes them susceptible to emergent, unintended behaviors that are not trivially predictable — including safety failures, policy evasion, and social-engineering style manipulation.todo
-```
+Adapter is an abstract base class with generate() and health_check().
 
-**Replace with** (option A: add citation)
+Use entry_points to register plugins, e.g. redteaming.adapters = ["llama_local = mypkg.adapters:LLamaAdapter"].
 
-```tex
-...makes them susceptible to emergent, unintended behaviours that are not trivially predictable — including safety failures, policy evasion, and social-engineering style manipulation~\cite{wei2023jailbroken}.
-```
+Load via importlib.metadata.entry_points().select(group="redteaming.adapters").
 
-**Or Replace with** (option B: soften and remove `todo`)
+Testing & CI
 
-```tex
-...makes them susceptible to emergent, unintended behaviours that are not trivially predictable — including safety failures, policy evasion, and social-engineering style manipulation.
-```
+Unit test model adapters by mocking responses (use respx for httpx).
 
----
+Use a deterministic mock adapter for CI to simulate different behaviours (refusal, hallucination, long latency).
 
-# 4) Mapping table: your taxonomy ↔ OWASP Top 10 (LLM) ↔ Example attacks & tests
+Add integration tests that run a small manifest against llama-cpp-python or the mock adapter.
 
-Drop this LaTeX `tabularx` into your chapter (update package use if needed; uses `tabularx` and `booktabs`). It shows how to align your taxonomy with OWASP and test examples. You can refer to it from your toolkit design and evaluation sections.
+Minimal production/dev Docker hints
 
-```tex
-\begin{table}[htbp]
-\centering
-\footnotesize
-\begin{tabularx}{\linewidth}{l X X}
-\toprule
-\textbf{Taxonomy Category} & \textbf{Corresponding OWASP LLM Top-10 Item (selected)} & \textbf{Example attacks / tests (to include in toolkit)} \\
-\midrule
-Malicious usage (actionable instructions) &
-Prompt injection / Instruction abuse &
-One-shot jailbreaks (role-play / direct override), template-based malicious prompts; ASR w/ automated judge; human-validated samples. \\[6pt]
+Compose services:
 
-Harassment, hate, discrimination &
-Toxic outputs / Unsafe content generation &
-Toxicity probes (slur insertion, subtle bias prompts); measure stereo-typing amplification; use toxicity classifier + human checks. \\[6pt]
+orchestrator (python app)
 
-Misinformation and hallucination &
-Hallucination & Wrong-factual-output &
-Fact-check probes, fabricated citation tests, hallucination scoring (precision/recall vs. gold facts). \\[6pt]
+llama-runtime (if needed) or run adapter in orchestrator container
 
-Privacy violations &
-Data exfiltration / Sensitive data leakage &
-Canary secrets, memorisation probes, reconstruction attacks; measure leakage rate and test with differential prompts. \\[6pt]
+ui (reads JSONL)
 
-Self-harm / dangerous content &
-Harmful instruction generation &
-Self-harm / suicide prompts, escalate-control tests, refusal robustness checks; combine LLM-judge + human review. \\[6pt]
+sqlite (optional)
 
-Emergent misuse / multi-turn manipulation &
-Context manipulation / Conversation hijacking &
-Multi-turn trajectory attacks (bait-and-switch, context poisoning); time-to-failure and steps-to-success metrics; RL/MDP-based attacker experiments. \\[6pt]
+Mount logs volume to host for easy inspection.
 
-Prompt injection (app-level) &
-Prompt injection (OWASP top concern) &
-Document ingestion attacks, web-crawled payloads (HouYi-like), sandbox escape simulation, origin-checking tests. \\[6pt]
+Quick summary / recommended choices
 
-Universal triggers / trojans &
-Stealthy triggers & supply-chain threats &
-Discover transferable prefixes/suffixes, test transferability across models and prompt variants; runtime monitoring tests. \\
-\bottomrule
-\end{tabularx}
-\caption{Mapping of the thesis taxonomy to OWASP LLM concerns and concrete example tests to include in the toolkit.}
-\label{tab:taxonomy-owasp-mapping}
-\end{table}
-```
+CLI: Typer
 
-* You can expand the “Corresponding OWASP” column to cite specific OWASP items (e.g., injection, poisoning, broken access controls) depending on the exact OWASP Top-10 numbering/labels.
-* Reference this table in your evaluation/design chapters to justify which automated tests you implement.
+Async core: asyncio + httpx + aiolimiter
 
----
+Manifest validation: pydantic (YAML/JSON)
 
-# 5) How to mention OWASP in text (short paragraph)
+Retries: tenacity
 
-Add this paragraph under your taxonomy or after the prompt-injection section:
+Logging/JSONL: structured JSON with python-json-logger (append-only file per experiment)
 
-```tex
-For application-level risks, we adopt OWASP's LLM guidance as a pragmatic checklist for deployment security~\cite{owasp2025llm}. OWASP's items focus on prompt-injection, data provenance and input-origin validation, leaking of sensitive data, and other operational concerns. In this work we map our research-oriented taxonomy to OWASP's practical mitigations (Table~\ref{tab:taxonomy-owasp-mapping}) and use the mapping to derive a set of concrete toolkit checks and end-to-end tests.
-```
+Plugin discovery: importlib.metadata.entry_points
 
----
+Sandbox plugins: subprocess / containers for untrusted code
 
-# 6) Small further recommendations (short)
-
-* In the toolkit design and evaluation, **explicitly implement at least 3 OWASP-style app-level tests** (prompt-origin validation, canonical prompt sanitization, and canary secret detection). That will make your toolkit credible to practitioners.
-* Add a brief **ethical handling note** in Chapter 2 or the methods: how you store harmful prompts, reviewer safety, and how you will prevent releasing dangerously effective prompt libraries unredacted.
-* Replace colored “Partial” cell content in Table~\ref{tab:framework-comparison} with plain text like `Partial` or `Limited`.
-
----
-
-# 7) Next step I can do (I’ll proceed within this reply)
-
-I already produced the mapping table and LaTeX snippets above. If you want, I can also:
-
-* Convert the rest of the Table~\ref{tab:framework-comparison} into the cleaned, color-free LaTeX (ready-to-paste).
-* Generate a short ethical-safeguards paragraph to paste into Chapter 2 (safe-handling of harmful artifacts).
-* Or scan your full `.tex` for remaining `todo` markers and produce an edited `.tex` with them removed (if you paste the file or the remainder here).
-
-Tell me which of those you want and I’ll do it now (I’ll perform it in this reply).
+Local default model: llama-cpp-python (adapter) — keeps cost free for judge & basic
